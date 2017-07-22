@@ -12,7 +12,7 @@
 
 #include "../include/ft_ls.h"
 
-t_ls			*ft_open_dir(DIR *rep, char *dname, t_opt opt, int x)
+t_ls			*ft_opendir(DIR *dir, char *dname, t_opt opt, int x)
 {
 	t_d			*file;
 	t_ls		*lst;
@@ -21,7 +21,7 @@ t_ls			*ft_open_dir(DIR *rep, char *dname, t_opt opt, int x)
 
 	lst = NULL;
 	path = NULL;
-	while ((file = readdir(rep)))
+	while ((file = readdir(dir)))
 	{
 		if ((opt.a_h || *(file->d_name) != '.')
 				&& (opt.a_f || (ft_strcmp(".", file->d_name)
@@ -41,25 +41,25 @@ t_ls			*ft_open_dir(DIR *rep, char *dname, t_opt opt, int x)
 	return (lst);
 }
 
-void			read_dir(t_ls *lst, char *dname, t_opt opt, int x)
+void			ft_readdir(t_ls *lst, char *dname, t_opt opt, int x)
 {
-	DIR			*rep;
+	DIR			*dir;
 	char		*tmp;
 
 	if (x == 1)
 		ft_printf("\n%s:\n", dname);
 	else if (x == 2)
 		ft_printf("%s:\n", dname);
-	if (!(rep = opendir(dname)))
+	if (!(dir = opendir(dname)))
 	{
 		tmp = ft_strrchr(dname, '/');
 		error_arg(((tmp) ? tmp + 1 : dname), strerror(errno));
 	}
 	else
 	{
-		lst = ft_open_dir(rep, dname, opt, x);
-		read_list(lst, opt);
-		if (closedir(rep) == -1)
+		lst = ft_opendir(dir, dname, opt, x);
+		ft_readlist(lst, opt);
+		if (closedir(dir) == -1)
 		{
 			tmp = ft_strrchr(dname, '/');
 			error_arg(((tmp) ? tmp + 1 : dname), strerror(errno));
@@ -67,7 +67,7 @@ void			read_dir(t_ls *lst, char *dname, t_opt opt, int x)
 	}
 }
 
-void			read_list(t_ls *lst, t_opt opt)
+void			ft_readlist(t_ls *lst, t_opt opt)
 {
 	t_ls		*sub;
 	t_ls		*ptr;
@@ -82,7 +82,7 @@ void			read_list(t_ls *lst, t_opt opt)
 				&& ft_strcmp("..", ((t_elem *)lst->data)->name)
 				&& ft_strcmp("./", ((t_elem *)lst->data)->name)
 				&& ft_strcmp("../", ((t_elem *)lst->data)->name))
-			read_dir(sub, ((t_elem *)lst->data)->path, opt, 1);
+			ft_readdir(sub, ((t_elem *)lst->data)->path, opt, 1);
 		lst = lst->next;
 	}
 	free_manage(&ptr);
@@ -98,7 +98,7 @@ void			dirs_manage(int ac, char **av, t_opt opt, int x)
 	lst = NULL;
 	i = 0;
 	if (i + 1 == ac)
-		read_dir(lst, ".", opt, x);
+		ft_readdir(lst, ".", opt, x);
 	if (!x && i + 2 < ac)
 		x = 2;
 	while (++i < ac)
@@ -107,10 +107,10 @@ void			dirs_manage(int ac, char **av, t_opt opt, int x)
 		{
 			type = check_mode_elem(stt);
 			if (type == 'd')
-				read_dir(lst, av[i], opt, x);
+				ft_readdir(lst, av[i], opt, x);
 			else if ((type == 'l' && !opt.l) && (stat(av[i], &stt) != -1
 						&& (check_mode_elem(stt) == 'd')))
-				read_dir(lst, av[i], opt, x);
+				ft_readdir(lst, av[i], opt, x);
 			x = 1;
 		}
 	}

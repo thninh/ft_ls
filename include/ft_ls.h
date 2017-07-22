@@ -107,7 +107,7 @@ void					display_column(t_ws ws, t_ls *lst, t_opt *opt);
 void					dirs_manage(int ac, char **av, t_opt opt, int x);
 void					free_manage(t_ls **lst);
 void					sort_list_elem(t_ls **begin, t_opt opt);
-void					read_list(t_ls *lst, t_opt opt);
+void					ft_readlist(t_ls *lst, t_opt opt);
 t_elem					*create_new_elem(char *name, char *path, t_opt *opt);
 char					check_mode_elem(t_stt stt);
 void					option_manage(t_elem *f, t_opt *opt);
