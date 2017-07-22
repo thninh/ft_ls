@@ -6,7 +6,7 @@
 /*   By: thninh <thninh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 08:11:25 by thninh            #+#    #+#             */
-/*   Updated: 2017/07/21 14:02:38 by thninh           ###   ########.fr       */
+/*   Updated: 2017/07/22 12:36:44 by thninh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 t_ls			*ft_opendir(DIR *dir, char *dname, t_opt opt, int x)
 {
-	t_d			*file;
-	t_ls		*lst;
-	t_elem		*ele;
-	char		*path;
+	t_ls			*lst;
+	t_elem			*ele;
+	char			*path;
+	struct dirent	*file;
 
 	lst = NULL;
 	path = NULL;
@@ -53,7 +53,8 @@ void			ft_readdir(t_ls *lst, char *dname, t_opt opt, int x)
 	if (!(dir = opendir(dname)))
 	{
 		tmp = ft_strrchr(dname, '/');
-		error_arg(((tmp) ? tmp + 1 : dname), strerror(errno));
+		ft_dprintf(2, "ft_ls: %s: %s\n", ((tmp) ? tmp + 1 : dname),
+				strerror(errno));
 	}
 	else
 	{
@@ -62,7 +63,8 @@ void			ft_readdir(t_ls *lst, char *dname, t_opt opt, int x)
 		if (closedir(dir) == -1)
 		{
 			tmp = ft_strrchr(dname, '/');
-			error_arg(((tmp) ? tmp + 1 : dname), strerror(errno));
+			ft_dprintf(2, "ft_ls: %s: %s\n", ((tmp) ? tmp + 1 : dname),
+					strerror(errno));
 		}
 	}
 }
@@ -90,13 +92,13 @@ void			ft_readlist(t_ls *lst, t_opt opt)
 
 void			dirs_manage(int ac, char **av, t_opt opt, int x)
 {
-	int			i;
-	char		type;
-	t_stt		stt;
-	t_ls		*lst;
+	int				i;
+	char			type;
+	t_ls			*lst;
+	struct stat		stt;
 
-	lst = NULL;
 	i = 0;
+	lst = NULL;
 	if (i + 1 == ac)
 		ft_readdir(lst, ".", opt, x);
 	if (!x && i + 2 < ac)

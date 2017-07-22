@@ -6,13 +6,13 @@
 /*   By: thninh <thninh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 16:12:12 by thninh            #+#    #+#             */
-/*   Updated: 2017/07/21 16:18:43 by thninh           ###   ########.fr       */
+/*   Updated: 2017/07/22 12:33:30 by thninh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_ls.h"
 
-char			check_mode_elem(t_stt stt)
+char			check_mode_elem(struct stat stt)
 {
 	if ((stt.st_mode & S_IFMT) == S_IFREG)
 		return ('f');
@@ -55,12 +55,13 @@ void			print_mode_elem(t_elem *f, t_opt *opt)
 		f->s_mode = '/';
 	if (!opt->l)
 		return ;
+	option_manage(f, opt);
 }
 
 void			option_manage(t_elem *f, t_opt *opt)
 {
-	t_pwd		*pwd;
-	t_gr		*grp;
+	struct passwd	*pwd;
+	struct group	*grp;
 
 	if (!opt->g)
 	{
@@ -94,7 +95,7 @@ t_elem			*create_new_elem(char *name, char *path, t_opt *opt)
 	{
 		if (stat(path, &(elem->stt)) == -1)
 		{
-			error_arg(name, strerror(errno));
+			ft_dprintf(2, "ft_ls: %s: %s\n", name, strerror(errno));
 			free(elem);
 			return (NULL);
 		}
@@ -102,7 +103,7 @@ t_elem			*create_new_elem(char *name, char *path, t_opt *opt)
 	elem->lpath = ft_asprintf(&(elem->path), "%s", path);
 	elem->mode = check_mode_elem(elem->stt);
 	if (opt)
-		option_manage(elem, opt);
+		print_mode_elem(elem, opt);
 	elem->name = ft_strdup(name);
 	return (elem);
 }

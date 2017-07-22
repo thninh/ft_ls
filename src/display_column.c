@@ -6,7 +6,7 @@
 /*   By: thninh <thninh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 15:06:41 by thninh            #+#    #+#             */
-/*   Updated: 2017/07/21 15:23:51 by thninh           ###   ########.fr       */
+/*   Updated: 2017/07/22 10:30:48 by thninh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void			display_colacross(t_ls *lst, int col, int elem, size_t size)
 	}
 }
 
-void			display_column(t_ws ws, t_ls *lst, t_opt *opt)
+void			display_column(struct winsize ws, t_ls *lst, t_opt *opt)
 {
 	int			col;
 	int			elem;

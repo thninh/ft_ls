@@ -6,7 +6,7 @@
 /*   By: thninh <thninh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 06:21:00 by thninh            #+#    #+#             */
-/*   Updated: 2017/07/21 16:29:37 by thninh           ###   ########.fr       */
+/*   Updated: 2017/07/22 13:41:29 by thninh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void			tri_size(t_ls **begin, t_opt opt)
 	}
 }
 
-time_t			get_time(time_t *s2, t_opt opt, t_stt st1, t_stt st2)
+time_t			get_time(time_t *s2, t_opt opt, struct stat st1, \
+												struct stat st2)
 {
 	time_t		s1;
 
@@ -109,23 +110,26 @@ void			sort_list_elem(t_ls **begin, t_opt opt)
 t_ls			*files_manage(t_ls *lst, int ac, char **av, t_opt opt)
 {
 	int			i;
-	t_stt		stt;
+	struct stat	stt;
 
 	i = 0;
-	while (i < ac - 1)
+	while (i++ < ac - 1)
 	{
 		if (av[i] && lstat(av[i], &stt) == -1)
 		{
-			CHECK(ft_strcmp(av[i], ""));
-			error_arg(av[i], strerror(errno));
+			if (!ft_strcmp(av[i], ""))
+			{
+				ft_dprintf(2, "ft_ls: %s: %s\n", "fts_open", strerror(errno));
+				exit(1);
+			}
+			else
+				ft_dprintf(2, "ft_ls: %s: %s\n", av[i], strerror(errno));
 		}
-		else if ((check_mode_elem(stt) == 'l' && ((stat(av[i], &stt) != -1
-			&& (check_mode_elem(stt) != 'd' || opt.l)) ||
-				(stat(av[i], &stt) == -1)))
-			|| check_mode_elem(stt) == 'f')
+		else if ((check_mode_elem(stt) == 'l' && ((stat(av[i], &stt) != -1 &&
+				(check_mode_elem(stt) != 'd' || opt.l)) ||
+				(stat(av[i], &stt) == -1))) || check_mode_elem(stt) == 'f')
 			listing_file(&lst, prt_mylstnew(create_new_elem(av[i], av[i], &opt),
 						sizeof(t_elem *)), opt);
-		i++;
 	}
 	sort_list_elem(&lst, opt);
 	display_manage(lst, &opt, 2);

@@ -6,7 +6,7 @@
 /*   By: thninh <thninh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 14:45:58 by thninh            #+#    #+#             */
-/*   Updated: 2017/07/21 14:57:09 by thninh           ###   ########.fr       */
+/*   Updated: 2017/07/22 10:27:16 by thninh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		stt_user(char *per, t_elem *f)
 		per[3] = '-';
 }
 
-void		stt_group(t_stt stt, char *per)
+void		stt_group(struct stat stt, char *per)
 {
 	if (stt.st_mode & S_IRGRP)
 		per[4] = 'r';
@@ -59,7 +59,7 @@ void		stt_group(t_stt stt, char *per)
 		per[6] = '-';
 }
 
-void		stt_other(t_stt stt, char *per)
+void		stt_other(struct stat stt, char *per)
 {
 	if (stt.st_mode & S_IROTH)
 		per[7] = 'r';

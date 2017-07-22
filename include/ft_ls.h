@@ -6,7 +6,7 @@
 /*   By: thninh <thninh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:50:28 by thninh            #+#    #+#             */
-/*   Updated: 2017/07/21 16:40:46 by thninh           ###   ########.fr       */
+/*   Updated: 2017/07/22 13:35:28 by thninh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,9 @@
 
 # define CHECK(x) if(!x) exit(1)
 
-typedef struct dirent	t_d;
-typedef struct stat		t_stt;
-typedef struct winsize	t_ws;
-typedef struct passwd	t_pwd;
-typedef struct group	t_gr;
-typedef struct timespec	t_tspec;
+# define MAJOR ft_len_grid(major(((t_elem *)l->data)->stt.st_rdev))
+# define MINOR ft_len_grid(minor(((t_elem *)l->data)->stt.st_rdev))
+
 typedef struct s_mylst	t_ls;
 
 typedef struct			s_format
@@ -84,15 +81,14 @@ typedef struct			s_elem
 	size_t				luid;
 	size_t				lgid;
 	size_t				lpath;
-	t_stt				stt;
+	struct stat			stt;
 }						t_elem;
 
 void					init_op(t_opt *opt);
 void					init_elem(t_elem *new_elem);
 void					init_format(t_format *format);
 void					error_display(char err_op);
-void					error_arg(char *arg, char *err);
-char					check_mode_elem(t_stt stt);
+char					check_mode_elem(struct stat stt);
 int						check_param(t_opt *opt, int ac, char **av);
 void					op_funct(char c, t_opt *opt);
 void 					op_funct_1s(char c, t_opt *opt);
@@ -103,13 +99,13 @@ void					permission_handler(t_elem *f, t_format format);
 void					display_info_elem(t_ls *lst, t_opt *opt);
 void					format_manage(t_ls *l, t_format *format);
 void					display_info_elem(t_ls *lst, t_opt *opt);
-void					display_column(t_ws ws, t_ls *lst, t_opt *opt);
+void					display_column(struct winsize ws, t_ls *lst, t_opt *opt);
 void					dirs_manage(int ac, char **av, t_opt opt, int x);
 void					free_manage(t_ls **lst);
 void					sort_list_elem(t_ls **begin, t_opt opt);
 void					ft_readlist(t_ls *lst, t_opt opt);
 t_elem					*create_new_elem(char *name, char *path, t_opt *opt);
-char					check_mode_elem(t_stt stt);
+char					check_mode_elem(struct stat stt);
 void					option_manage(t_elem *f, t_opt *opt);
 
 #endif

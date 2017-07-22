@@ -6,13 +6,13 @@
 /*   By: thninh <thninh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 14:42:29 by thninh            #+#    #+#             */
-/*   Updated: 2017/07/21 15:26:41 by thninh           ###   ########.fr       */
+/*   Updated: 2017/07/22 12:44:01 by thninh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_ls.h"
 
-size_t			info_link(t_ls *lst, char link[1024])
+size_t			info_link(t_ls *lst, char *link)
 {
 	size_t		ret;
 

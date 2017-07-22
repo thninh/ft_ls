@@ -6,7 +6,7 @@
 /*   By: thninh <thninh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 07:08:42 by thninh            #+#    #+#             */
-/*   Updated: 2017/07/21 15:31:16 by thninh           ###   ########.fr       */
+/*   Updated: 2017/07/22 10:30:28 by thninh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void			name_mode(t_ls *lst)
 	}
 }
 
-void			display_m_option(t_ls *lst, t_ws ws, int x)
+void			display_m_option(t_ls *lst, struct winsize ws, int x)
 {
 	int			len;
 
@@ -66,7 +66,7 @@ void			display_m_option(t_ls *lst, t_ws ws, int x)
 
 void			display_manage(t_ls *lst, t_opt *opt, int x)
 {
-	t_ws		ws;
+	struct winsize	ws;
 
 	if (!lst)
 		return ;
